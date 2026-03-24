@@ -1,0 +1,352 @@
+@import "tailwindcss";
+
+/* ═══ Tailwind v4 Theme — CSS-first configuration ═══ */
+@theme {
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  /* Surface colors (driven by CSS custom properties) */
+  --color-surface: var(--surface);
+  --color-surface-deep: var(--surface-deep);
+  --color-surface-card: var(--surface-card);
+  --color-surface-hover: var(--surface-hover);
+
+  /* Border / edge colors */
+  --color-edge: var(--border-default);
+  --color-edge-strong: var(--border-strong);
+  --color-edge-light: var(--border-light);
+
+  /* Text / ink colors */
+  --color-ink: var(--text-primary);
+  --color-ink-heading: var(--text-heading);
+  --color-ink-body: var(--text-body);
+  --color-ink-secondary: var(--text-secondary);
+  --color-ink-muted: var(--text-muted);
+  --color-ink-faint: var(--text-faint);
+
+  /* Agent identity colors */
+  --color-agent-story: #22d3ee;
+  --color-agent-strategy: #fb923c;
+  --color-agent-writer: #a78bfa;
+  --color-agent-automation: #34d399;
+  --color-agent-executor: #60a5fa;
+  --color-agent-bug: #fb7185;
+  --color-agent-coverage: #fbbf24;
+
+  /* Animations */
+  --animate-pulse-glow: pulse-glow 2s ease-in-out infinite;
+  --animate-slide-up: slide-up 0.3s ease-out;
+  --animate-fade-in: fade-in 0.4s ease-out;
+  --animate-cursor-blink: cursor-blink 0.8s step-start infinite;
+  --animate-spin-slow: spin-slow 8s linear infinite;
+  --animate-progress-bar: progress-bar 2s linear infinite;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   @layer base — Theme variables & element resets.
+   MUST be inside @layer so Tailwind utilities can override them.
+   In Tailwind v4 cascade layers: theme < base < components < utilities.
+   Unlayered CSS beats ALL layers, which broke p-4, flex, etc.
+   ═══════════════════════════════════════════════════════════════ */
+@layer base {
+  :root {
+    --surface-deep: #060a14;
+    --surface: #0f172a;
+    --surface-card: #111b2e;
+    --surface-hover: #162036;
+
+    --text-heading: #ffffff;
+    --text-primary: #f1f5f9;
+    --text-body: #cbd5e1;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --text-faint: #475569;
+
+    --border-strong: rgba(30, 41, 59, 0.8);
+    --border-default: rgba(30, 41, 59, 0.6);
+    --border-light: rgba(30, 41, 59, 0.4);
+  }
+
+  [data-theme="light"] {
+    --surface-deep: #f8fafc;
+    --surface: #ffffff;
+    --surface-card: #f1f5f9;
+    --surface-hover: #e2e8f0;
+
+    --text-heading: #0f172a;
+    --text-primary: #1e293b;
+    --text-body: #334155;
+    --text-secondary: #64748b;
+    --text-muted: #94a3b8;
+    --text-faint: #cbd5e1;
+
+    --border-strong: rgba(203, 213, 225, 0.8);
+    --border-default: rgba(203, 213, 225, 0.6);
+    --border-light: rgba(203, 213, 225, 0.4);
+  }
+
+  html {
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease;
+  }
+
+  body {
+    background: var(--surface-deep);
+    color: var(--text-primary);
+    font-family: "Inter", system-ui, sans-serif;
+    min-height: 100vh;
+    overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  #root {
+    min-height: 100vh;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(100, 116, 139, 0.3);
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(100, 116, 139, 0.5);
+  }
+
+  /* Selection */
+  ::selection {
+    background: rgba(34, 211, 238, 0.25);
+    color: white;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   @layer components — Custom component classes.
+   Lives between base and utilities in the cascade.
+   ═══════════════════════════════════════════════════════════════ */
+@layer components {
+  .stream-cursor {
+    display: inline-block;
+    width: 7px;
+    height: 15px;
+    background: #22d3ee;
+    animation: cursor-blink 0.8s step-start infinite;
+    vertical-align: middle;
+    margin-left: 2px;
+    border-radius: 1px;
+  }
+
+  .agent-active {
+    animation: agent-pulse 2s ease-in-out infinite;
+  }
+
+  .progress-shimmer {
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(34, 211, 238, 0.5) 50%,
+      transparent 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s linear infinite;
+  }
+
+  .connector-animate {
+    stroke-dasharray: 8 4;
+    animation: dash-flow 1s linear infinite;
+  }
+
+  .card-hover {
+    transition: all 0.2s ease;
+  }
+  .card-hover:hover {
+    background: var(--surface-hover);
+    border-color: var(--border-strong);
+    transform: translateY(-1px);
+  }
+
+  .stat-animate {
+    animation: count-up 0.5s ease-out forwards;
+  }
+
+  .code-block {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px;
+    line-height: 1.6;
+    tab-size: 2;
+  }
+
+  .pipeline-run-btn {
+    /* Default dark styles inherited from Tailwind classes */
+  }
+
+  .nav-item-inactive {
+    /* Default dark styles inherited from Tailwind classes */
+  }
+}
+
+/* ── Keyframes (outside layers — they don't participate in cascade) ── */
+@keyframes cursor-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes agent-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 8px 0 var(--glow-color, rgba(34, 211, 238, 0.3));
+  }
+  50% {
+    box-shadow: 0 0 24px 4px var(--glow-color, rgba(34, 211, 238, 0.4));
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@keyframes dash-flow {
+  0% {
+    stroke-dashoffset: 12;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes count-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   LIGHT MODE — Intentionally UNLAYERED so they override
+   Tailwind utility classes (which live in @layer utilities).
+   ═══════════════════════════════════════════════════════════════ */
+
+[data-theme="light"] .text-white {
+  color: var(--text-heading);
+}
+[data-theme="light"] .text-slate-200,
+[data-theme="light"] .text-slate-300 {
+  color: #334155;
+}
+[data-theme="light"] .text-slate-400 {
+  color: #64748b;
+}
+[data-theme="light"] .text-slate-500 {
+  color: #94a3b8;
+}
+[data-theme="light"] .text-slate-600 {
+  color: #94a3b8;
+}
+
+/* Border overrides — catches /80, /60, /50, /40 variants */
+[data-theme="light"] [class*="border-slate-800"],
+[data-theme="light"] [class*="border-slate-700"] {
+  border-color: var(--border-default);
+}
+
+/* Background overrides for non-surface slate backgrounds */
+[data-theme="light"] [class*="bg-slate-800"] {
+  background-color: rgba(226, 232, 240, 0.5);
+}
+[data-theme="light"] [class*="bg-slate-900"] {
+  background-color: rgba(241, 245, 249, 0.6);
+}
+
+/* Scrollbar for light mode */
+[data-theme="light"] ::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.3);
+}
+[data-theme="light"] ::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.5);
+}
+
+/* Selection */
+[data-theme="light"] ::selection {
+  background: rgba(34, 211, 238, 0.2);
+  color: #0f172a;
+}
+
+/* Stream cursor adapts */
+[data-theme="light"] .stream-cursor {
+  background: #0891b2;
+}
+
+/* Gradient text stays visible in light */
+[data-theme="light"] .bg-linear-to-r.from-cyan-400.to-violet-400 {
+  --tw-gradient-from: #06b6d4;
+  --tw-gradient-to: #7c3aed;
+}
+
+/* Select dropdowns */
+[data-theme="light"] select {
+  background-color: var(--surface-card);
+  color: var(--text-body);
+}
+
+/* Pipeline "Run AI Pipeline" button — light mode */
+[data-theme="light"] .pipeline-run-btn {
+  background: linear-gradient(
+    to right,
+    rgba(6, 182, 212, 0.15),
+    rgba(124, 58, 237, 0.15)
+  );
+  color: #0e7490;
+  border-color: rgba(6, 182, 212, 0.4);
+}
+[data-theme="light"] .pipeline-run-btn:hover {
+  background: linear-gradient(
+    to right,
+    rgba(6, 182, 212, 0.25),
+    rgba(124, 58, 237, 0.25)
+  );
+  border-color: rgba(6, 182, 212, 0.6);
+  box-shadow: 0 4px 12px rgba(6, 182, 212, 0.15);
+}
+[data-theme="light"] .pipeline-run-btn:disabled {
+  background: rgba(226, 232, 240, 0.5);
+  color: #94a3b8;
+  border-color: rgba(203, 213, 225, 0.5);
+}
+
+/* Sidebar nav — light mode */
+[data-theme="light"] .nav-item-inactive:hover {
+  background: rgba(6, 182, 212, 0.06);
+  color: #0e7490;
+}
+[data-theme="light"] .nav-item-inactive {
+  color: #475569;
+}
+
+/* Text-cyan needs to stay readable in light mode */
+[data-theme="light"] .text-cyan-300 {
+  color: #0e7490;
+}
+[data-theme="light"] .text-cyan-400 {
+  color: #0891b2;
+}
