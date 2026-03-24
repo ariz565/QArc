@@ -1,7 +1,7 @@
 """Context summarizer — compress phase outputs to prevent context window overflow.
 
 Between pipeline phases we LLM-summarize the accumulated context, keeping it
-under control for downstream agents (like TradingAgents clearing messages
+under control for downstream agents (like  clearing messages
 between phases to avoid "growing prompt" problem).
 """
 

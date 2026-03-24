@@ -21,7 +21,7 @@ class Settings(BaseSettings):
     # ── LLM Provider Flags ──
     llm_default_provider: str = "mock"
 
-    # Two-tier LLM strategy (like TradingAgents deep_think / quick_think)
+    # Two-tier LLM strategy (like deep_think / quick_think)
     llm_deep_provider: str | None = None    # judges, critical decisions (falls back to default)
     llm_quick_provider: str | None = None   # workers, analysts (falls back to default)
 
